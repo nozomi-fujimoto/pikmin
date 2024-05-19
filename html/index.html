@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vue.jsで画像を雨のように降らせる</title>
+        <style>
+    body {
+        overflow: hidden; /* 画面外にはみ出る要素を非表示にする */
+    }
+
+    .raindrop {
+        position: absolute;
+        animation: fall linear infinite; /* 雨滴が落ちるアニメーションを設定 */
+    }
+
+    @keyframes fall {
+        from { top: -50px; } /* 雨滴の開始位置 */
+        to { top: 100%; } /* 雨滴の終了位置 */
+    }
+</style>
+    </head>
+    <body>
+        <div id="app">
+            <h1>count:{{count}}</h1>
+            <img v-for="(raindrop, index) in raindrops" :key="index"
+                :src="raindrop.path"
+                :style="{ left: raindrop.x + 'px', top: raindrop.y + 'px' }"
+                class="raindrop" @click="incrementCount(index,raindrop.type)">
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/vue@3.2.20/dist/vue.global.min.js"></script>
+        <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    count:0,
+                    raindrops: [] // 雨滴の要素を格納する配列
+                };
+            },
+            methods:{
+                incrementCount(index,type){
+                    if(type == "red"){
+                        this.count++;
+                    }else{
+                        this.count += 100;
+                    }
+                    this.raindrops.splice(index,1);
+                }
+            },
+            created() {
+                // 雨滴を生成する関数
+                function createRaindrop() {
+                    // 赤ピクミン
+                    const raindrop = {
+                        type:"red",
+                        path: "/assets/images/featherPikmin.png", // 仮の画像のパス
+                        x: Math.random() * (window.innerWidth-200), // ランダムなX座標を設定
+                        y: Math.random() * (window.innerHeight - 200), // Y座標を画面上部に設定
+                        speed: Math.random() * 5 + 1 // 落下速度
+                    };
+                    // 岩ピクミン
+                    const raindropRock = {
+                        type:"rock",
+                        path: "/assets/images/rockPikmin.png", // 仮の画像のパス
+                        x: Math.random() * (window.innerWidth-200), // ランダムなX座標を設定
+                        y: Math.random() * (window.innerHeight - 200), // Y座標を画面上部に設定
+                        speed: Math.random() * 5 + 1 // 落下速度
+                    };
+
+                    // たまに岩ピクミンがでる
+                    if ( Math.random() * 100 >= 99) {
+                        // 雨滴の情報をVueインスタンスのデータに追加
+                        this.raindrops.push(raindropRock);
+                    } else {
+                        // 雨滴の情報をVueインスタンスのデータに追加
+                        this.raindrops.push(raindrop);
+                    }
+
+                    // 雨滴を画面から外れたら配列から削除
+                    setTimeout(() => {
+                        const index = this.raindrops.indexOf(raindrop);
+                        if (index !== -1) {
+                            this.raindrops.splice(index, 1);
+                        }
+                        const indexRock = this.raindrops.indexOf(raindropRock);
+                        if (indexRock !== -1) {
+                            this.raindrops.splice(indexRock, 1);
+                        }
+                    }, 1000); // 3秒後に削除
+                }
+
+                // 雨滴を定期的に生成
+                setInterval(createRaindrop.bind(this), 500);
+            }
+        });
+
+        app.mount("#app");
+    </script>
+    </body>
+</html>
