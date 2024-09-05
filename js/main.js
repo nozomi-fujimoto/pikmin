@@ -6,7 +6,7 @@ const myData = {
         { name: "青ピクミン", path: "/assets/images/bluePikmin.png" },
         { name: "岩ピクミン", path: "/assets/images/rockPikmin.png" },
         { name: "黄ピクミン", path: "/assets/images/yellowPikmin.png" },
-        { name: "羽ピクミン", path: "/assets/images/featherPikmin.png" }
+        { name: "羽ピクミン?", path: "/assets/images/featherPikmin.png" }
     ]
 }
 
