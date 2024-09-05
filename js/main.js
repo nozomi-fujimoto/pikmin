@@ -1,6 +1,6 @@
 // Vue.jsで扱うデータを用意する
 const myData = {
-    appName: "Pikmin!",
+    appName: "Pikmin",
     pikmins: [
         { name: "赤ピクミン!", path: "/assets/images/redPikmin.png" },
         { name: "青ピクミン", path: "/assets/images/bluePikmin.png" },
